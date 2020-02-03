@@ -1,13 +1,8 @@
 package com.seeder.cursomc;
 
-import com.seeder.cursomc.domain.Categoria;
-import com.seeder.cursomc.domain.Cidade;
-import com.seeder.cursomc.domain.Estado;
-import com.seeder.cursomc.domain.Produto;
-import com.seeder.cursomc.repositories.CategoriaRepository;
-import com.seeder.cursomc.repositories.CidadeRepository;
-import com.seeder.cursomc.repositories.EstadoRepository;
-import com.seeder.cursomc.repositories.ProdutoRepository;
+import com.seeder.cursomc.domain.*;
+import com.seeder.cursomc.enums.TipoCliente;
+import com.seeder.cursomc.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -26,6 +21,10 @@ public class CursomcApplication implements CommandLineRunner {
     private EstadoRepository estadoRepository;
     @Autowired
     private CidadeRepository cidadeRepository;
+    @Autowired
+    private ClienteRepository clienteRepository;
+    @Autowired
+    private EnderecoRepository enderecoRepository;
 
     public static void main(String[] args) {
 
@@ -64,8 +63,15 @@ public class CursomcApplication implements CommandLineRunner {
         estadoRepository.saveAll(Arrays.asList(est1,est2));
         cidadeRepository.saveAll(Arrays.asList(c1,c2,c3));
 
+        Cliente cli1 = new Cliente(null,"Maria Silva", "mariasilva@aaa.aaa", "3243242342", TipoCliente.PESSOAFISICA);
+        cli1.getTelefones().addAll(Arrays.asList("232323333","443333222"));
+        Endereco e1 = new Endereco(null, "Rua das flores","300","Apot 333", "Jardim", "2332323",cli1, c1);
+        Endereco e2 = new Endereco(null, "Av Matos","230","Sala 333", "Centro", "2332323",cli1, c2);
 
+        cli1.getEnderecos().addAll(Arrays.asList(e1,e2));
 
+        clienteRepository.saveAll(Arrays.asList(cli1));
+        enderecoRepository.saveAll(Arrays.asList(e1,e2));
 
     }
 }
