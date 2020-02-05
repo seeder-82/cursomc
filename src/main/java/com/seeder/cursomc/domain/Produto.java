@@ -1,6 +1,7 @@
 package com.seeder.cursomc.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -24,6 +25,7 @@ public class Produto implements Serializable {
     )
     private List<Categoria> categorias = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "id.produto")
     private Set<ItemPedido> itens = new HashSet<>();
 
@@ -37,21 +39,6 @@ public class Produto implements Serializable {
 
     public List<Categoria> getCategorias() {
         return categorias;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Produto)) return false;
-        Produto produto = (Produto) o;
-        return Objects.equals(id, produto.id) &&
-                Objects.equals(nome, produto.nome) &&
-                Objects.equals(preco, produto.preco);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, nome, preco);
     }
 
     public void setCategorias(List<Categoria> categorias) {
@@ -68,6 +55,7 @@ public class Produto implements Serializable {
         this.preco = preco;
     }
 
+    @JsonIgnore
     public List<Pedido> getPedidos(){
         List<Pedido> lista = new ArrayList<>();
         for (ItemPedido x : itens){
@@ -98,5 +86,20 @@ public class Produto implements Serializable {
 
     public void setPreco(Double preco) {
         this.preco = preco;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Produto)) return false;
+        Produto produto = (Produto) o;
+        return Objects.equals(id, produto.id) &&
+                Objects.equals(nome, produto.nome) &&
+                Objects.equals(preco, produto.preco);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, nome, preco);
     }
 }
